@@ -1,6 +1,4 @@
 ﻿
-using System.Diagnostics.Tracing;
-
 Console.WriteLine("Console Write Line sirve para escribir datos en la salida de la consola"); 
 Console.WriteLine(70);
 Console.WriteLine(10 + 20);
