@@ -19,14 +19,14 @@ decimal descuento = 10.50m;
 DateTime fecha = DateTime.Now;
 //Para ver el contenido de la variable en la consola se usa WriteLine
 
-Console.WriteLine(num);
-Console.WriteLine(activo);
-Console.WriteLine(pi);
-Console.WriteLine(letra);
-Console.WriteLine(precio);
-Console.WriteLine(abecedario);
-Console.WriteLine(descuento);
-Console.WriteLine(fecha);
+Console.WriteLine("Tipo de dato Int: " + num);
+Console.WriteLine("Tipo de dato Boleano: " + activo);
+Console.WriteLine("Tipo de dato Double: " + pi);
+Console.WriteLine("Tipo de dato Char: " + letra);
+Console.WriteLine("Tipo de dato Float: " + precio);
+Console.WriteLine("Tipo de dato String: " + abecedario);
+Console.WriteLine("Tipo de dato Decimal: " + descuento);
+Console.WriteLine("Tipo de dato Date Time: " + fecha);
 
 //Concatenar valores en salida de datos
 string nombre = "Jose";
@@ -57,6 +57,32 @@ Console.WriteLine($"Muestra el segundo valor: {distinto_tipo}");
 //Definir una constante, se usa const + tipo de dato y nombre de la variable
 const double dato_constante = 3.1416;
 Console.WriteLine("Dato constante: " + dato_constante);
+
+//Casting convertir un tipo de dato a otro implicito o explicito
+
+//Implicito, asigna la variable total lo que esta en la variable valor aunque no sea el mismo tipo
+int valor = 200;
+double total = valor;
+Console.WriteLine("Casting Implicito int a double " + total);
+
+//Explicito, se coloca int delante de la variable costo para que acepte el tipo de dato correctamente
+double costo = 500.23;
+int descuenta = (int)costo;
+Console.WriteLine("Casting Explicito double a int: " + descuenta);
+
+//Implicito, muestra el valor de codigo de la letra A en Asci
+char letra_prueba = 'A';
+int codigoAsci = letra_prueba;
+Console.WriteLine("Codigo Asci de A: " + codigoAsci);
+
+
+string palabra = "12345";
+int numero_prueba = Convert.ToInt32(palabra);
+Console.WriteLine("Convierte string a entero: " + numero_prueba);
+
+string textoDecimal = "15.60";
+double valor_decimal = double.Parse(textoDecimal);
+Console.WriteLine("Convierte string a double: " + valor_decimal);
 
 //Quita el path del repositorio, la ubicacion de donde esta el proyecto
 Console.ReadKey();
