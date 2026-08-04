@@ -1,6 +1,4 @@
 using System;
-using System.Net.NetworkInformation;
-using System.Runtime.Intrinsics.X86;
 /*Este codigo tiene como finalidad almacenar en un arreglo la cantidad de numeros positivos y negativos que quiera el usuario,
 se debe de obtener la suma, el promedio, el numero mayor, numero menor, cuantos numeros son positivos, negativos y ceros,
 se le mostrara al usuario si un numero que el decida existe en el arreglo o no*/
@@ -12,14 +10,20 @@ class EstadisticaArreglo
         int cantidad = Convert.ToInt32(Console.ReadLine());
         int numeroEscrito = 0;
         Console.WriteLine("Cantidad de numeros que ingreso: " + cantidad);
-        int[] numeros = new int[cantidad];
+        int[] arregloOriginal = new int[cantidad];
         //El ciclo ayuda a pedirle al usuario los numeros que quiera ingresar en el arreglo, el usuario establece el limite
         for (int i = 0; i < cantidad; i++)
         {
             Console.WriteLine("Escribe el numero");
             numeroEscrito = Convert.ToInt32(Console.ReadLine());
-            numeros[i] = numeroEscrito; //Se almacenan las ventas en el arreglo
+            arregloOriginal[i] = numeroEscrito; //Se almacenan las ventas en el arreglo
         }
+        int[] numeros = new int[cantidad];
+        for (int j = 0; j < cantidad; j++)
+        {
+            numeros[j] = arregloOriginal[j];
+        }
+       
         double sumaTotal = SumaNumero(numeros);//Se llama al metodo para la sumatoria
         Console.WriteLine("Suma Total: " + sumaTotal);
         double promedioNumeros = Promedio(numeros); //Se llama al metodo de promedio
@@ -39,7 +43,8 @@ class EstadisticaArreglo
         int numeroBuscar = Convert.ToInt32(Console.ReadLine());
         bool existeNumero = BuscaNumero(numeros, numeroBuscar);
         int posicion;
-        if (existeNumero == true)
+        //Si existe el numero a buscar en el arreglo indica si o no ademas de la posicion donde se encuentra si existe
+        if (existeNumero)
         {
             Console.WriteLine("El numero SI existe en el arreglo");
             posicion = PosicionNumero(numeros, numeroBuscar);
@@ -49,7 +54,18 @@ class EstadisticaArreglo
         {
             Console.WriteLine("El numero NO existe en el arreglo");
         }
-
+        //Muestra la copia del arreglo
+        Console.WriteLine("Copia del arreglo");
+        for (int k = 0; k < cantidad; k++)
+        {
+            Console.WriteLine(numeros[k]);
+        }
+        //Muestra el arreglo original
+        Console.WriteLine("Arreglo Original");
+        for (int l = 0; l < cantidad; l++)
+        {
+            Console.WriteLine(arregloOriginal[l]);
+        }
     }
 
     //Se realiza la suma total de las cantidades dadas
@@ -74,35 +90,41 @@ class EstadisticaArreglo
     public static int Mayor(int[] arreglo)
     {
         int aux = 0;
-        int[] arregloMod = arreglo;
-        for (int j = 0; j < arregloMod.Length - 1; j++) //Este ciclo ayuda a colocar el numero mayor al final
+        int numMayor=0;
+        for (int i = 0; i < arreglo.Length - 1; i++) //Este ciclo ayuda a rectificar que el arreglo este ordenado de inicio a fin
         {
-            if (arregloMod[j] > arregloMod[j + 1])
+            for (int j = 0; j < arreglo.Length - 1; j++) //Este ciclo ayuda a colocar el numero mayor al final
             {
-                aux = arregloMod[j + 1];
-                arregloMod[j + 1] = arregloMod[j];
-                arregloMod[j] = aux;
+                if (arreglo[j] > arreglo[j + 1])
+                {
+                    aux = arreglo[j + 1];
+                    arreglo[j + 1] = arreglo[j];
+                    arreglo[j] = aux;
+                }
             }
         }
-        int mayor = arregloMod[arregloMod.Length - 1];
-        return mayor;
+        numMayor = arreglo[arreglo.Length - 1]; //Se coloca la ultima posicion por ser el numero mayor al ordenar el arreglo
+        return numMayor;
     }
 
     public static int Menor(int[] arreglo)
     {
         int aux = 0;
-        int[] arregloM = arreglo;
-        for (int j = 0; j < arregloM.Length - 1; j++) //Este ciclo ayuda a colocar el numero mayor al final
+        int numMenor = 0;
+        for (int i = 0; i < arreglo.Length - 1; i++) //Este ciclo ayuda a rectificar que el arreglo este ordenado de inicio a fin
         {
-            if (arregloM[j] < arregloM[j + 1])
+            for (int j = 0; j < arreglo.Length - 1; j++) //Este ciclo ayuda a colocar el numero mayor al final
             {
-                aux = arregloM[j + 1];
-                arregloM[j + 1] = arregloM[j];
-                arregloM[j] = aux;
+                if (arreglo[j] > arreglo[j + 1])
+                {
+                    aux = arreglo[j + 1];
+                    arreglo[j + 1] = arreglo[j];
+                    arreglo[j] = aux;
+                }
             }
         }
-        int menor = arregloM[arregloM.Length - 1];
-        return menor;
+        numMenor = arreglo[0]; //Se coloca la posicion cero porque es el numero menor en el arreglo ordenado
+        return numMenor;
     }
 
     public static int ContarPositivos(int[] arreglo) {
@@ -170,15 +192,15 @@ class EstadisticaArreglo
 
     public static int PosicionNumero(int[]arreglo,int busca)
     {
-        int contador=0;
-        for (int i = 0; i < arreglo.Length; i++)
+        int posicion=0;
+        int i=0;
+        while (arreglo[i] != busca)
         {
-            if (arreglo[i] == busca)
-            {
-                contador = i;
-            }
+            i++;
         }
-        return contador;
+        posicion = i;;
+        return posicion;
+        
     }
 
 }
