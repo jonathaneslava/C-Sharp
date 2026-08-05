@@ -4,7 +4,8 @@ class Program
 {
     static void Main(string[] args)
     {
-        EstadisticaArreglo.Estadistica();
+        Matrices.Matriz();
+        //EstadisticaArreglo.Estadistica();
         //VentasTotalPorcentaje.Ventas();
         //ProgramaPropinas.Porcentaje();
         //Fundamentos.FundamentosBasicos();
