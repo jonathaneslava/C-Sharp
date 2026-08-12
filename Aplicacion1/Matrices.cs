@@ -29,6 +29,13 @@ class Matrices
         int alumnoPromedio = Convert.ToInt32(Console.ReadLine());
         double promedio = PromedioAlumno(calificaciones, alumnoPromedio);
         Console.WriteLine("El promedio del alumno " + alumnoPromedio + " es: " + promedio);
+        Console.WriteLine("Escribe la materia que quieras sacar el promedio");
+        int materiaPromedio = Convert.ToInt32(Console.ReadLine());
+        double promedioMateria = PromedioMateria(calificaciones, materiaPromedio);
+        Console.WriteLine("El promedio de la materia " + materiaPromedio + " es: " + promedioMateria);
+        Console.WriteLine("La mayor Calificacion es: ");
+        double altaCalificacion = MayorCalificacion(calificaciones);
+        Console.WriteLine(altaCalificacion);
     }
     public static int[,] MostrarMatriz(int[,] calificaciones)
     {
@@ -60,5 +67,59 @@ class Matrices
         }
         promedio = suma / (calificaciones.GetLength(1));
         return promedio;
+    }
+
+    public static double PromedioMateria(int[,] calificaciones, int materia)
+    {
+        int suma = 0;
+        double promedio = 0;
+        for (int i = 0; i < calificaciones.GetLength(0); i++)
+        {
+            for (int j = 0; j < calificaciones.GetLength(1); j++)
+            {
+                if (materia == j)
+                {
+                    suma = calificaciones[i, j] + suma;
+                    Console.WriteLine("  " + suma);
+                }
+                        
+            }
+        }
+        promedio = suma / (calificaciones.GetLength(1));
+        return promedio;
+    }
+
+    public static double MayorCalificacion(int[,] calificaciones)
+    {
+        int aux = 0;
+        int cont = 0;
+        double mayorCalificacion = 0;
+        int[] mayoresCalificaciones = new int[calificaciones.GetLength(0)];
+        for (int i = 0; i < calificaciones.GetLength(0); i++)
+        {
+            for (int j = 0; j < calificaciones.GetLength(1); j++)
+            {
+                if (calificaciones[i, j] > calificaciones[i, j + 1])
+                {
+                    aux = calificaciones[i, j + 1];
+                    calificaciones[i, j + 1] = calificaciones[i, j];
+                    calificaciones[i, j] = aux;
+                }
+            }
+            mayoresCalificaciones[i] = calificaciones[i, calificaciones.GetLength(1)];
+        }
+        for (int k = 0; k < calificaciones.GetLength(0); k++)
+        {
+            if (mayoresCalificaciones[k] > mayoresCalificaciones[k + 1])
+            {
+                cont = mayoresCalificaciones[k + 1];
+                mayoresCalificaciones[k + 1] = mayoresCalificaciones[k];
+                mayoresCalificaciones[k] = cont;
+            }
+        }
+        mayorCalificacion = mayoresCalificaciones[calificaciones.GetLength(0)];
+        return mayorCalificacion;
+        
+
     }
 }
