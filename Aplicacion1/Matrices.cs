@@ -9,10 +9,10 @@ class Matrices
         int alumnos = Convert.ToInt32(Console.ReadLine());
         Console.WriteLine("Cuantas materias tiene cada alumno");
         int materias = Convert.ToInt32(Console.ReadLine());
-        int[,] calificaciones = new int[alumnos, materias];
+        int[,] calificacionesOriginales = new int[alumnos, materias];
         int calificacion = 0;
         //Se llena la matriz con las calificaciones de cada alumno
-        Console.WriteLine("Escriba las califiaciones");
+        Console.WriteLine("Escriba las calificaciones");
         for (int i = 0; i < alumnos; i++)
         {
             Console.WriteLine("Alumno " + (i+1));
@@ -20,18 +20,29 @@ class Matrices
             {
                 Console.WriteLine("Materia " + (j+1));
                 calificacion = Convert.ToInt32(Console.ReadLine());
-                calificaciones[i, j] = calificacion;
+                calificacionesOriginales[i, j] = calificacion;
             }
         }
+
+        //Se crea una matriz de copia para no afectar la matriz original
+        int[,] calificaciones = new int[alumnos, materias];
+        for (int k = 0; k < calificacionesOriginales.GetLength(0); k++)
+        {
+            for (int l = 0; l < calificacionesOriginales.GetLength(1); l++)
+            {
+                calificaciones[k, l] = calificacionesOriginales[k, l];
+            }
+        }
+
         int[,] muestraMatriz = MostrarMatriz(calificaciones);
         Console.WriteLine(muestraMatriz);
         Console.WriteLine("Escribe el alumno que quieras sacar el promedio");
         int alumnoPromedio = Convert.ToInt32(Console.ReadLine());
-        double promedio = PromedioAlumno(calificaciones, alumnoPromedio);
+        double promedio = PromedioAlumno(calificaciones, alumnoPromedio-1);
         Console.WriteLine("El promedio del alumno " + alumnoPromedio + " es: " + promedio);
         Console.WriteLine("Escribe la materia que quieras sacar el promedio");
         int materiaPromedio = Convert.ToInt32(Console.ReadLine());
-        double promedioMateria = PromedioMateria(calificaciones, materiaPromedio);
+        double promedioMateria = PromedioMateria(calificaciones, materiaPromedio-1);
         Console.WriteLine("El promedio de la materia " + materiaPromedio + " es: " + promedioMateria);
         double altaCalificacion = MayorCalificacion(calificaciones);
         Console.WriteLine("La calificacion mas alta es: " + altaCalificacion);
@@ -41,7 +52,17 @@ class Matrices
         Console.WriteLine("La cantidad de calificaciones aprobatorias son: " + calificacionesAprobadas);
         int calificacionesReprobadas = CalificacionesReprobatorias(calificaciones);
         Console.WriteLine("La cantidad de calificaciones reprobatorias son: " + calificacionesReprobadas);
-
+        Console.WriteLine("Escriba la calificacion que desea buscar");
+        double calificacionBuscar = Convert.ToDouble(Console.ReadLine());
+        bool existeCalificacion = BuscaCalificacion(calificaciones, calificacionBuscar);
+        if (existeCalificacion)
+        {
+            Console.WriteLine("La calificacion existe en la matriz");
+        }
+        else
+        {
+            Console.WriteLine("La calificacion no existe en la matriz");
+        }
     }
     public static int[,] MostrarMatriz(int[,] calificaciones)
     {
@@ -90,7 +111,7 @@ class Matrices
                 }         
             }
         }
-        promedio = suma / (calificaciones.GetLength(1));
+        promedio = suma / (calificaciones.GetLength(0));
         return promedio;
     }
 
@@ -189,6 +210,31 @@ class Matrices
             }
         }
         return calReprobadas;
+    }
+
+    public static bool BuscaCalificacion(int[,] calificaciones, double busca)
+    {
+        int contador = 0;
+        bool existe;
+        for (int i = 0; i < calificaciones.GetLength(0); i++)
+        {
+            for (int j = 0; j < calificaciones.GetLength(1); j++)
+            {
+                if (calificaciones[i, j] == busca)
+                {
+                    contador++;
+                }
+            }
+        }
+        if(contador != 0)
+        {
+            existe = true;
+        }
+        else
+        {
+            existe = false;
+        }
+        return existe;
     }
 
 }
