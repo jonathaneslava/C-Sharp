@@ -9,7 +9,7 @@ class Matrices
         int alumnos = Convert.ToInt32(Console.ReadLine());
         Console.WriteLine("Cuantas materias tiene cada alumno");
         int materias = Convert.ToInt32(Console.ReadLine());
-        int[,] calificacionesOriginales = new int[alumnos, materias];
+        int[,] calificaciones = new int[alumnos, materias];
         int calificacion = 0;
         //Se llena la matriz con las calificaciones de cada alumno
         Console.WriteLine("Escriba las calificaciones");
@@ -20,17 +20,7 @@ class Matrices
             {
                 Console.WriteLine("Materia " + (j+1));
                 calificacion = Convert.ToInt32(Console.ReadLine());
-                calificacionesOriginales[i, j] = calificacion;
-            }
-        }
-
-        //Se crea una matriz de copia para no afectar la matriz original
-        int[,] calificaciones = new int[alumnos, materias];
-        for (int k = 0; k < calificacionesOriginales.GetLength(0); k++)
-        {
-            for (int l = 0; l < calificacionesOriginales.GetLength(1); l++)
-            {
-                calificaciones[k, l] = calificacionesOriginales[k, l];
+                calificaciones[i, j] = calificacion;
             }
         }
 
@@ -80,17 +70,11 @@ class Matrices
 
     public static double PromedioAlumno(int[,] calificaciones, int alumno)
     {
-        int suma = 0;
+        double suma = 0;
         double promedio = 0;
-        for (int i = 0; i < calificaciones.GetLength(0); i++)
+        for (int i = 0; i < calificaciones.GetLength(1); i++)
         {
-            if (alumno == i)
-            {
-                for (int j=0; j < calificaciones.GetLength(1); j++)
-                {
-                    suma = calificaciones[i,j] + suma;
-                }
-            }
+            suma = calificaciones[alumno,i] + suma;
         }
         promedio = suma / (calificaciones.GetLength(1));
         return promedio;
@@ -98,84 +82,112 @@ class Matrices
 
     public static double PromedioMateria(int[,] calificaciones, int materia)
     {
-        int suma = 0;
+        double suma = 0;
         double promedio = 0;
         for (int i = 0; i < calificaciones.GetLength(0); i++)
         {
-            for (int j = 0; j < calificaciones.GetLength(1); j++)
-            {
-                if (materia == j)
-                {
-                    suma = calificaciones[i, j] + suma;
-                    //Console.WriteLine("  " + suma);
-                }         
-            }
+            suma = calificaciones[i, materia] + suma;
+            //Console.WriteLine("  " + suma); 
         }
         promedio = suma / (calificaciones.GetLength(0));
         return promedio;
     }
 
-    public static double MayorCalificacion(int[,] calificaciones)
+    public static double MayorCalificacion(int[,] calificacionesOriginal)
     {
+        //Se crea una matriz de copia para no afectar la matriz original
+        int[,] calificaciones = new int[calificacionesOriginal.GetLength(0), calificacionesOriginal.GetLength(1)];
+        for (int k = 0; k < calificacionesOriginal.GetLength(0); k++)
+        {
+            for (int l = 0; l < calificacionesOriginal.GetLength(1); l++)
+            {
+                calificaciones[k, l] = calificacionesOriginal[k, l];
+            }
+        }
+
         int aux = 0;
         double mayorCalificacion = 0;
-        int[] mayoresCalificaciones = new int[calificaciones.GetLength(0)];
-        for (int i = 0; i < calificaciones.GetLength(0); i++)
-        {
-            for (int j = 0; j < calificaciones.GetLength(1) - 1; j++)
+        for(int x=0;x<calificaciones.GetLength(0);x++){
+
+            for (int i = 0; i < calificaciones.GetLength(0); i++)
             {
-                if (calificaciones[i, j] > calificaciones[i, j + 1])
+                for (int j = 0; j < calificaciones.GetLength(1) - 1; j++)
                 {
-                    aux = calificaciones[i, j + 1];
-                    calificaciones[i, j + 1] = calificaciones[i, j];
-                    calificaciones[i, j] = aux;
+                    if (calificaciones[i, j] > calificaciones[i, j + 1])
+                    {
+                        aux = calificaciones[i, j + 1];
+                        calificaciones[i, j + 1] = calificaciones[i, j];
+                        calificaciones[i, j] = aux;
+                    }
                 }
             }
         }
-        //MostrarMatriz(calificaciones);
+        MostrarMatriz(calificaciones);
         int auxi = 0;
-        for (int k = 0; k < calificaciones.GetLength(0)-1; k++) 
+        for(int y = 0; y < calificaciones.GetLength(0) - 1; y++)
         {
-            if (calificaciones[k, calificaciones.GetLength(1) - 1] > calificaciones[k + 1, calificaciones.GetLength(1) - 1])
+            for (int k = 0; k < calificaciones.GetLength(0) - 1; k++)
             {
-                auxi = calificaciones[k + 1, calificaciones.GetLength(1) - 1];
-                calificaciones[k + 1, calificaciones.GetLength(1) - 1] = calificaciones[k, calificaciones.GetLength(1) - 1];
-                calificaciones[k, calificaciones.GetLength(1) - 1] = auxi;
+                if (calificaciones[k, calificaciones.GetLength(1) - 1] > calificaciones[k + 1, calificaciones.GetLength(1) - 1])
+                {
+                    auxi = calificaciones[k + 1, calificaciones.GetLength(1) - 1];
+                    calificaciones[k + 1, calificaciones.GetLength(1) - 1] = calificaciones[k, calificaciones.GetLength(1) - 1];
+                    calificaciones[k, calificaciones.GetLength(1) - 1] = auxi;
+                }
             }
         }
-        //MostrarMatriz(calificaciones);
+        
+        MostrarMatriz(calificaciones);
         mayorCalificacion = calificaciones[calificaciones.GetLength(0) - 1, calificaciones.GetLength(1) - 1];
         return mayorCalificacion;
     }
 
-    public static double MenorCalificacion(int[,] calificaciones)
+    public static double MenorCalificacion(int[,] calificacionesOriginal)
     {
+        //Se crea una matriz de copia para no afectar la matriz original
+        int[,] calificaciones = new int[calificacionesOriginal.GetLength(0), calificacionesOriginal.GetLength(1)];
+        for (int k = 0; k < calificacionesOriginal.GetLength(0); k++)
+        {
+            for (int l = 0; l < calificacionesOriginal.GetLength(1); l++)
+            {
+                calificaciones[k, l] = calificacionesOriginal[k, l];
+            }
+        }
+
         int aux = 0;
         double menorCalificacion = 0;
-        for (int i = 0; i < calificaciones.GetLength(0); i++)
+        for (int x = 0; x < calificaciones.GetLength(0); x++)
         {
-            for (int j = 0; j < calificaciones.GetLength(1) - 1; j++)
+            for (int i = 0; i < calificaciones.GetLength(0); i++)
             {
-                if (calificaciones[i, j] < calificaciones[i, j + 1])
+                for (int j = 0; j < calificaciones.GetLength(1) - 1; j++)
                 {
-                    aux = calificaciones[i, j + 1];
-                    calificaciones[i, j + 1] = calificaciones[i, j];
-                    calificaciones[i, j] = aux;
+                    if (calificaciones[i, j] < calificaciones[i, j + 1])
+                    {
+                        aux = calificaciones[i, j + 1];
+                        calificaciones[i, j + 1] = calificaciones[i, j];
+                        calificaciones[i, j] = aux;
+                    }
                 }
             }
         }
-        //MostrarMatriz(calificaciones);
+        
+        MostrarMatriz(calificaciones);
         int auxi = 0;
-        for (int k = 0; k < calificaciones.GetLength(0) - 1; k++)
+        for (int y = 0; y < calificaciones.GetLength(0) - 1; y++)
         {
-            if (calificaciones[k, calificaciones.GetLength(1) - 1] < calificaciones[k + 1, calificaciones.GetLength(1) - 1])
+            for (int k = 0; k < calificaciones.GetLength(0) - 1; k++)
             {
-                auxi = calificaciones[k + 1, calificaciones.GetLength(1) - 1];
-                calificaciones[k + 1, calificaciones.GetLength(1) - 1] = calificaciones[k, calificaciones.GetLength(1) - 1];
-                calificaciones[k, calificaciones.GetLength(1) - 1] = auxi;
+                if (calificaciones[k, calificaciones.GetLength(1) - 1] < calificaciones[k + 1, calificaciones.GetLength(1) - 1])
+                {
+                    auxi = calificaciones[k + 1, calificaciones.GetLength(1) - 1];
+                    calificaciones[k + 1, calificaciones.GetLength(1) - 1] = calificaciones[k, calificaciones.GetLength(1) - 1];
+                    calificaciones[k, calificaciones.GetLength(1) - 1] = auxi;
+                }
             }
         }
-        //MostrarMatriz(calificaciones);
+        
+        MostrarMatriz(calificaciones);
         menorCalificacion = calificaciones[calificaciones.GetLength(0) - 1, calificaciones.GetLength(1) - 1];
         return menorCalificacion;
     }
