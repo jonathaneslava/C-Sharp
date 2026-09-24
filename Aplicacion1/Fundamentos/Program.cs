@@ -4,6 +4,7 @@ class Program
 {
     static void Main(string[] args)
     {
+        //Console.WriteLine("Modificacion exitosa");
         MatrizNumeros.AnalizadorMatrizNumeros();
         //Matrices.Matriz();
         //EstadisticaArreglo.Estadistica();
