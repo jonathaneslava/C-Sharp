@@ -51,15 +51,52 @@ class Program
         Console.WriteLine("Escribe la edad que desees buscar");
         int buscaEdad = Convert.ToInt32(Console.ReadLine());
         MuestraAlumnos(Edades(alumnos, buscaEdad));
-            //MatrizNumeros.AnalizadorMatrizNumeros();
-            //Matrices.Matriz();
-            //EstadisticaArreglo.Estadistica();
-            //VentasTotalPorcentaje.Ventas();
-            //ProgramaPropinas.Porcentaje();
-            //Fundamentos.FundamentosBasicos();
-            //Quita el path del repositorio, la ubicacion de donde esta el proyecto
-            Console.ReadKey();
+
+        //Se llama al metodo MostrarDatos de la clase Alumno
+        Console.WriteLine("Entrara al metodo de Alumno Mostrar Datos");
+        for (int a = 0; a < alumnos.Length; a++)
+        {
+            alumnos[a].MostrarDatos();
+        }
+
+        Console.WriteLine("Entrara al metodo de Esta Aprobado");
+        for(int b = 0; b < alumnos.Length; b++)
+        {
+            if (alumnos[b].EstaAprobado())
+            {
+                Console.WriteLine("Esta aprobado el alumno: " + alumnos[b].nombre);
+            }
+            else
+            {
+                Console.WriteLine("Esta reprobado el alumno: " + alumnos[b].nombre);
+            }
+        }
+
+        Console.WriteLine("Entrara al metodo de Obtener Estado");
+        for(int c=0; c < alumnos.Length; c++)
+        {
+            Console.WriteLine("El alumno: " + alumnos[c].nombre + " esta " + alumnos[c].ObtenerEstado());
+        }
+
+        Console.WriteLine("Entrara al metodo de Subir Puntos");
+        Console.WriteLine("¿De que alumno desea subir su calificacion?");
+        int subirAlumno = Convert.ToInt32(Console.ReadLine());
+        if(subirAlumno == 0)
+        {
+            Console.WriteLine("Debe ser mayor a 0");
+        }
+        else
+        {
+            Alumno alumnoElegido = alumnos[subirAlumno - 1];
+            Console.WriteLine("Cuantos puntos subira el alumno?");
+            int subirPuntos = Convert.ToInt32(Console.ReadLine());
+            alumnoElegido.SubirCalificacion(subirPuntos);
+            alumnoElegido.MostrarDatos();
+        }
+
+        Console.ReadKey();
     }
+
     public static void MuestraAlumnos(Alumno[] alumnos)
     {
         for (int i = 0; i < alumnos.Length; i++)
@@ -184,9 +221,7 @@ class Program
             }
         }
         return edadAlumno;
-   
     }
-
 }
 
 
