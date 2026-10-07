@@ -1,8 +1,45 @@
 public class Alumno
 {
     //Propiedades
-    public string nombre { get; set; }
-    public int edad { get; set; }
+    private string privnombre;
+    public string nombre {
+        get 
+        {
+            return privnombre; 
+        
+        }
+        set 
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                Console.WriteLine("El nombre no debe de ser vacio");
+            }
+            else 
+            {
+                privnombre = value;
+            }
+        } 
+    }
+
+    private int privedad;
+    public int edad {
+        get 
+        {
+            return privedad;
+        }
+        set
+        {
+            if (value >= 5 && value <= 100)
+            {
+                privedad = value;
+            }
+            else 
+            {
+                Console.WriteLine("Edad no valida");
+            }
+        }   
+    }
+
     private int privcalificacion; //Campo Privado
     public int calificacion
     {
@@ -15,6 +52,10 @@ public class Alumno
             if(value >= 0 && value <= 10)
             {
                 privcalificacion = value;
+            }
+            else
+            {
+                Console.WriteLine("Calificacion no valida");
             }
         }
     }
@@ -70,6 +111,18 @@ public class Alumno
         else
         {
             calificacion = calificacionTotal;
+        }
+    }
+
+    public bool PuedeSubirCalificacion()
+    {
+        if(calificacion >= 10)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
 

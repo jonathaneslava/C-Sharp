@@ -78,23 +78,31 @@ class Program
             Console.WriteLine("El alumno: " + alumnos[c].nombre + " esta " + alumnos[c].ObtenerEstado());
         }
 
-        Console.WriteLine("Entrara al metodo de Subir Puntos");
-        Console.WriteLine("¿De que alumno desea subir su calificacion?");
-        int subirAlumno = Convert.ToInt32(Console.ReadLine());
-        if(subirAlumno == 0)
+        Console.WriteLine("Entra al metodo de Puede Subir Clificacion");
+        Console.WriteLine("¿Que alumno quiere revisar si puede subir su calificacion");
+        int alumnoSubeCalificacion = Convert.ToInt32(Console.ReadLine());
+        if (alumnoSubeCalificacion <= 0 || alumnoSubeCalificacion > cantidadAlumnos)
         {
-            Console.WriteLine("Debe ser mayor a 0");
+            Console.WriteLine("El alumno no existe");
         }
         else
         {
-            Alumno alumnoElegido = alumnos[subirAlumno - 1];
-            Console.WriteLine("Cuantos puntos subira el alumno?");
-            int subirPuntos = Convert.ToInt32(Console.ReadLine());
-            alumnoElegido.SubirCalificacion(subirPuntos);
-            alumnoElegido.MostrarDatos();
+            Alumno alumnoSube = alumnos[alumnoSubeCalificacion - 1];
+            if (alumnoSube.PuedeSubirCalificacion())
+            {
+                Console.WriteLine("El alumno puede subir calificacion");
+                Console.WriteLine("Cuantos puntos subira el alumno?");
+                int subirPuntos = Convert.ToInt32(Console.ReadLine());
+                alumnoSube.SubirCalificacion(subirPuntos);
+                alumnoSube.MostrarDatos();
+            }
+            else
+            {
+                Console.WriteLine("El alumno no puede subir su calificacion");
+            }
         }
 
-        Console.ReadKey();
+            Console.ReadKey();
     }
 
     public static void MuestraAlumnos(Alumno[] alumnos)
