@@ -17,7 +17,7 @@ namespace SistemaEscolar.Controllers
     {
         //Lista temporal para hacer pruebas
         //Crea una lista capaz de contener varios objetos de tipo Alumnos
-        private readonly List<Alumnos> alumnos = new List<Alumnos>
+        private static readonly List<Alumnos> alumnos = new List<Alumnos>
         {
             new Alumnos
             {
@@ -35,6 +35,9 @@ namespace SistemaEscolar.Controllers
             }
         };
 
+        //Contador para asignar el siguiente Id disponible.
+        private static int siguienteId = 3;
+
         // Indica que este método responderá a una petición HTTP GET (se utiliza normalmente para CONSULTAR información).
         // GET: api/Alumnos
         [HttpGet]
@@ -44,18 +47,37 @@ namespace SistemaEscolar.Controllers
             return Ok(alumnos);
         }
 
+
+        //Documenta que el registro exitoso devuelve un alumno
+        //ProducesResponseType informa que respuestas puede devolver un endpoint
+        //typeof(Alumnos) Indica que la respuesta contiene un objeto de nuestra clase Alumnos
+        //StatusCodes.Status201Created Representa el código HTTP 201, que indica que se creó un recurso
+        //StatusCodes.Status400BadRequest Documenta el código 400, que indica que la solicitud tiene datos incorrectos o no puede procesarse como se esperaba.
+        
+        //con el código HTTP 201 Created.
+        [ProducesResponseType(typeof(Alumnos), StatusCodes.Status201Created)]
+
+        //Documenta que la solicitud puede ser incorrecta.
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
         //Le indica a ASP.NET Core que este método debe ejecutarse cuando se recibe una petición HTTP POST.
         [HttpPost]
         public ActionResult<Alumnos> RegistrarAlumno(Alumnos nuevoAlumno) //El parámetro nuevoAlumno representa al alumno que recibimos. 
         {
-            //Asigna un identificador tomando como referencia la cantidad de alumnos actuales.
-            nuevoAlumno.Id = alumnos.Count + 1;
+            //Asignamos un Id único al nuevo alumno.
+            //Usando siguienteId++ nos permite incrementar de forma ordenada los ID aunque se eliminen alumnos de la lista.
+            nuevoAlumno.Id = siguienteId++;
 
             //Agrega el objeto a nuestra lista.
             alumnos.Add(nuevoAlumno);
 
-            //Devuelve el alumno registrado con una respuesta HTTP 200 OK.
-            return Ok(nuevoAlumno);
+            //Devuelve 201 Created e indica dónde consultar al alumno
+            return CreatedAtAction( 
+                nameof(ObtenerAlumnoPorId), //Indica qué método del controlador permite consultar al alumno creado GET.
+                new { id = nuevoAlumno.Id }, //Proporciona el ID que necesita ese método para construir la dirección URL.
+                nuevoAlumno //Es el objeto que queremos devolver en la respuesta, con sus datos y el ID que acabamos de asignarle.
+            );
+
         }
 
         //Indica que este método recibe peticiones GET con un valor al final de la URL
@@ -97,6 +119,31 @@ namespace SistemaEscolar.Controllers
 
             //Devuelve respuesta HTTP con los datos actualizados
             return Ok(alumno);
+        }
+
+        //Indica que este método responderá a solicitudes HTTP DELETE
+        //que incluyan el identificador del alumno.
+        // DELETE: api/Alumnos/{id}
+        [HttpDelete("{id}")]
+        public IActionResult EliminarAlumno(int id)
+        {
+            //Busca en la lista al alumno cuyo Id coincida con el que recibimos.
+            Alumnos? alumno = alumnos.Find(a => a.Id == id);
+
+            //Si no encuentra al alumno, devuelve una respuesta 404.
+            if (alumno == null)
+            {
+                return NotFound();
+            }
+
+            //Si el alumno existe, lo elimina de la lista.
+            alumnos.Remove(alumno);
+
+            // Comprobamos cuántos alumnos quedan después de eliminar.
+            Console.WriteLine($"Alumnos restantes: {alumnos.Count}");
+
+            //Devuelve una respuesta 204 indicando que la eliminación fue exitosa.
+            return NoContent();
         }
 
     }
