@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 //Permite utilizar la clase Alumnos que creamos dentro de la carpeta Models
 using SistemaEscolar.Models;
-
+using SistemaEscolar.Services;
 //Indica el espacio de nombres al que pertenece esta clase SistemaEscolar trabaja con Controllers
 namespace SistemaEscolar.Controllers 
 {
@@ -15,6 +15,15 @@ namespace SistemaEscolar.Controllers
 
     public class AlumnosController : ControllerBase
     {
+        private readonly AlumnoService _alumnoService;
+        //Es el constructor de la clase. Se ejecuta cuando se crea una instancia de AlumnosController
+        //Obtiene la instancia registrada anteriormente mediante AddSingleton.
+        public AlumnosController(AlumnoService alumnoService)
+        {
+            //Guardamos esa instancia en el campo _alumnoService para poder utilizarla desde los métodos del Controller.
+            _alumnoService = alumnoService;
+        }
+
         //Lista temporal para hacer pruebas
         //Crea una lista capaz de contener varios objetos de tipo Alumnos
         private static readonly List<Alumnos> alumnos = new List<Alumnos>
@@ -84,17 +93,14 @@ namespace SistemaEscolar.Controllers
         [HttpGet("{id}")]
         public ActionResult<Alumnos> ObtenerAlumnoPorId(int id)
         {
-            //Busca en la lista un alumno cuyo Id coincida con el que solicitaste.
-            //Alumnos? indica el tipo de objeto que esperamos, permitiendo también que el resultado sea null si no se encuentra.
-            //Expresion Lambda representa la condición que debe cumplir cada alumno para encontrarlo.
-            Alumnos? alumno = alumnos.Find(a => a.Id == id);
+            //Le pide al Service que haga la búsqueda
+            Alumnos? alumno = _alumnoService.ObtenerAlumnoPorId(id);
 
-            //Si no encuentra al alumno devuelve null
             if (alumno == null)
             {
-                return NotFound(); //Responde con 404 not found
+                return NotFound();
             }
-            //Si el alumno existe devuelve sus datos
+
             return Ok(alumno);
         }
 

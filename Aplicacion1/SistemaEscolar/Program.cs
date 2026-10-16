@@ -1,7 +1,11 @@
+using SistemaEscolar.Services;
 var builder = WebApplication.CreateBuilder(args); //Preparar mi aplicacion y servicios que va usar
 
-// Add services to the container.
+// Registrar el servicio de alumnos 
+//AddSingleton le indica a ASP.NET Core que utilice una misma instancia del servicio durante la vida de la aplicación.
+builder.Services.AddSingleton<AlumnoService>();
 
+// Add services to the container.
 builder.Services.AddControllers(); //Esta aplicacion va usar controllers
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
