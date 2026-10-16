@@ -98,6 +98,12 @@ namespace SistemaEscolar.Controllers
             return Ok(alumno);
         }
 
+        //Puede devolver 200 OK y, cuando lo haga, devolverá un objeto Alumnos
+        [ProducesResponseType(typeof(Alumnos), StatusCodes.Status200OK)]
+        //Puede responder 400 Bad Request si los datos enviados no son válidos
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //Puede devolver 404 Not Found si el alumno que buscamos no existe
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         //Indica que este método responderá a solicitudes PUT que incluyan el identificador del alumno.
         [HttpPut("{id}")]
         //Recibe dos datos:id: identifica al alumno que queremos modificar. alumnoActualizado: contiene los nuevos datos que enviaremos.
@@ -121,6 +127,10 @@ namespace SistemaEscolar.Controllers
             return Ok(alumno);
         }
 
+        //Puede devolver 204 No Content cuando el alumno se elimina correctamente.
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        //Puede devolver 404 Not Found si intentamos eliminar un alumno que no existe.
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         //Indica que este método responderá a solicitudes HTTP DELETE
         //que incluyan el identificador del alumno.
         // DELETE: api/Alumnos/{id}
