@@ -53,7 +53,7 @@ namespace SistemaEscolar.Controllers
         public ActionResult<List<Alumnos>> ObtenerAlumnos()
         {
             //Devuelve una respuesta HTTP 200 OK junto con la lista de alumnos.
-            return Ok(alumnos);
+            return Ok(_alumnoService.ObtenerAlumnos());
         }
 
 
@@ -73,12 +73,7 @@ namespace SistemaEscolar.Controllers
         [HttpPost]
         public ActionResult<Alumnos> RegistrarAlumno(Alumnos nuevoAlumno) //El parámetro nuevoAlumno representa al alumno que recibimos. 
         {
-            //Asignamos un Id único al nuevo alumno.
-            //Usando siguienteId++ nos permite incrementar de forma ordenada los ID aunque se eliminen alumnos de la lista.
-            nuevoAlumno.Id = siguienteId++;
-
-            //Agrega el objeto a nuestra lista.
-            alumnos.Add(nuevoAlumno);
+            _alumnoService.RegistrarAlumno(nuevoAlumno);
 
             //Devuelve 201 Created e indica dónde consultar al alumno
             return CreatedAtAction( 
@@ -86,7 +81,6 @@ namespace SistemaEscolar.Controllers
                 new { id = nuevoAlumno.Id }, //Proporciona el ID que necesita ese método para construir la dirección URL.
                 nuevoAlumno //Es el objeto que queremos devolver en la respuesta, con sus datos y el ID que acabamos de asignarle.
             );
-
         }
 
         //Indica que este método recibe peticiones GET con un valor al final de la URL
