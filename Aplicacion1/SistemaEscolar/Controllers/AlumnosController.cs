@@ -24,29 +24,6 @@ namespace SistemaEscolar.Controllers
             _alumnoService = alumnoService;
         }
 
-        //Lista temporal para hacer pruebas
-        //Crea una lista capaz de contener varios objetos de tipo Alumnos
-        private static readonly List<Alumnos> alumnos = new List<Alumnos>
-        {
-            new Alumnos
-            {
-                Id = 1,
-                Nombre = "Carlos",
-                Edad = 20,
-                Carrera = "Administracion"
-            },
-            new Alumnos
-            {
-                Id = 2,
-                Nombre = "Pedro",
-                Edad = 25,
-                Carrera = "Medicina"
-            }
-        };
-
-        //Contador para asignar el siguiente Id disponible.
-        private static int siguienteId = 3;
-
         // Indica que este método responderá a una petición HTTP GET (se utiliza normalmente para CONSULTAR información).
         // GET: api/Alumnos
         [HttpGet]
@@ -55,7 +32,6 @@ namespace SistemaEscolar.Controllers
             //Devuelve una respuesta HTTP 200 OK junto con la lista de alumnos.
             return Ok(_alumnoService.ObtenerAlumnos());
         }
-
 
         //Documenta que el registro exitoso devuelve un alumno
         //ProducesResponseType informa que respuestas puede devolver un endpoint
@@ -87,7 +63,7 @@ namespace SistemaEscolar.Controllers
         [HttpGet("{id}")]
         public ActionResult<Alumnos> ObtenerAlumnoPorId(int id)
         {
-            //Le pide al Service que haga la búsqueda
+            //Le pide al Service que haga la búsqueda.
             Alumnos? alumno = _alumnoService.ObtenerAlumnoPorId(id);
 
             if (alumno == null)
@@ -109,19 +85,14 @@ namespace SistemaEscolar.Controllers
         //Recibe dos datos:id: identifica al alumno que queremos modificar. alumnoActualizado: contiene los nuevos datos que enviaremos.
         public ActionResult<Alumnos> ActualizarAlumno(int id, Alumnos alumnoActualizado)
         {
-            //Busca en la lista al alumno cuyo Id coincida con el que recibimos.
-            Alumnos? alumno = alumnos.Find(a => a.Id == id);
+            //Solicita al Service que busque y actualice al alumno.
+            Alumnos? alumno = _alumnoService.ActualizarAlumno(id, alumnoActualizado);
 
             //Si no encuentra al alumno devuelve null
             if (alumno == null)
             {
                 return NotFound();//Responde con 404 not found
             }
-
-            //Asignacion de propiedades, copia los nuevos valores al alumno
-            alumno.Nombre = alumnoActualizado.Nombre;
-            alumno.Edad = alumnoActualizado.Edad;
-            alumno.Carrera = alumnoActualizado.Carrera;
 
             //Devuelve respuesta HTTP con los datos actualizados
             return Ok(alumno);
@@ -137,20 +108,14 @@ namespace SistemaEscolar.Controllers
         [HttpDelete("{id}")]
         public IActionResult EliminarAlumno(int id)
         {
-            //Busca en la lista al alumno cuyo Id coincida con el que recibimos.
-            Alumnos? alumno = alumnos.Find(a => a.Id == id);
+            //Solicita al Service que elimine al alumno y devuelve si tuvo éxito.
+            bool eliminado = _alumnoService.EliminarAlumno(id);
 
             //Si no encuentra al alumno, devuelve una respuesta 404.
-            if (alumno == null)
+            if (!eliminado)
             {
                 return NotFound();
             }
-
-            //Si el alumno existe, lo elimina de la lista.
-            alumnos.Remove(alumno);
-
-            // Comprobamos cuántos alumnos quedan después de eliminar.
-            Console.WriteLine($"Alumnos restantes: {alumnos.Count}");
 
             //Devuelve una respuesta 204 indicando que la eliminación fue exitosa.
             return NoContent();

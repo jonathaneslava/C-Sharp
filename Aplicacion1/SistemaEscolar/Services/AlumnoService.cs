@@ -52,5 +52,38 @@ namespace SistemaEscolar.Services
             return nuevoAlumno;
         }
 
+        public Alumnos? ActualizarAlumno(int id, Alumnos alumnoActualizado)
+        {
+            //Busca en la lista al alumno cuyo Id coincida con el que recibimos.
+            Alumnos? alumno = alumnos.Find(a => a.Id == id);
+
+            //Si no encuentra al alumno devuelve null
+            if (alumno == null)
+            {
+                return null; //Devuelve null si no existe
+            }
+            //Asignacion de propiedades, copia los nuevos valores al alumno
+            alumno.Nombre = alumnoActualizado.Nombre;
+            alumno.Edad = alumnoActualizado.Edad;
+            alumno.Carrera = alumnoActualizado.Carrera;
+            //Devuelve el alumno actualizado.
+            return alumno;
+        }
+
+        public bool EliminarAlumno(int id)
+        {
+            //Busca en la lista al alumno cuyo Id coincida con el que recibimos.
+            Alumnos? alumno = alumnos.Find(a => a.Id == id);
+            //Si no encuentra al alumno, devuelve false
+            if (alumno == null)
+            {
+                return false;
+            }
+            //Si el alumno existe, lo elimina de la lista.
+            alumnos.Remove(alumno);
+            //Si lo eimino correctamente devuelve true.
+            return true;
+        }
+
     }
 }
