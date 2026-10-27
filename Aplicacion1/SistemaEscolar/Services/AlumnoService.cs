@@ -1,3 +1,4 @@
+using SistemaEscolar.Data;
 using SistemaEscolar.Models;
 
 namespace SistemaEscolar.Services
@@ -5,6 +6,14 @@ namespace SistemaEscolar.Services
     //Se crea la clase AlumnoService
     public class AlumnoService
     {
+        //SistemaEscolarContext es el contexto que configuramos para acceder a SQL Server.
+        //_context es el campo donde guardaremos la referencia a ese contexto.
+        private readonly SistemaEscolarContext _context;
+        //El constructor recibe el contexto automáticamente mediante la inyección de dependencias, porque ya registramos AddDbContext en Program.cs.
+        public AlumnoService(SistemaEscolarContext context)
+        {
+            _context = context;
+        }
         //Por ahora utilizamos la misma lista temporal de alumnos.
         private readonly List<Alumnos> alumnos = new List<Alumnos>
         {
@@ -36,7 +45,7 @@ namespace SistemaEscolar.Services
         //Este método devuelve una lista de objetos Alumnos
         public List<Alumnos> ObtenerAlumnos()
         {
-            return alumnos;//devuelve la lista que pertenece al Service.
+            return _context.Alumnos.ToList();
         }
 
         private int siguienteId = 3;
