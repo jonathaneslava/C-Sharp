@@ -1,9 +1,20 @@
 using SistemaEscolar.Services;
+using Microsoft.EntityFrameworkCore;
+using SistemaEscolar.Data;
+
 var builder = WebApplication.CreateBuilder(args); //Preparar mi aplicacion y servicios que va usar
 
 // Registrar el servicio de alumnos 
+//builder.Services: es el contenedor donde registramos los servicios que la aplicación puede utilizar.
+//AddSingleton: indica que se utilizará una misma instancia del servicio durante la vida de la aplicación
+//<AlumnoService>: especifica qué clase queremos registrar.
 //AddSingleton le indica a ASP.NET Core que utilice una misma instancia del servicio durante la vida de la aplicación.
 builder.Services.AddSingleton<AlumnoService>();
+
+//Registra nuestro contexto en el sistema de inyección de dependencias.
+builder.Services.AddDbContext<SistemaEscolarContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("ConexionSQL"))); //Recupera la conexión que guardamos en appsettings.json
 
 // Add services to the container.
 builder.Services.AddControllers(); //Esta aplicacion va usar controllers
