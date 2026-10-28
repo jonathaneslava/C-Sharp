@@ -49,13 +49,17 @@ namespace SistemaEscolar.Controllers
         [HttpPost]
         public ActionResult<Alumnos> RegistrarAlumno(Alumnos nuevoAlumno) //El parámetro nuevoAlumno representa al alumno que recibimos. 
         {
-            _alumnoService.RegistrarAlumno(nuevoAlumno);
+            //nuevoAlumno contiene los datos que llegan desde Swagger.
+            //_alumnoService.RegistrarAlumno(nuevoAlumno) solicita que el servicio registre al alumno.
+            //alumnoRegistrado recibe el objeto que devuelve el servicio, incluido el identificador generado por SQL Server.
+            Alumnos alumnoRegistrado =
+                _alumnoService.RegistrarAlumno(nuevoAlumno);
 
             //Devuelve 201 Created e indica dónde consultar al alumno
             return CreatedAtAction( 
                 nameof(ObtenerAlumnoPorId), //Indica qué método del controlador permite consultar al alumno creado GET.
-                new { id = nuevoAlumno.Id }, //Proporciona el ID que necesita ese método para construir la dirección URL.
-                nuevoAlumno //Es el objeto que queremos devolver en la respuesta, con sus datos y el ID que acabamos de asignarle.
+                new { id = alumnoRegistrado.Id }, //Proporciona el ID que necesita ese método para construir la dirección URL.
+                alumnoRegistrado //Es el objeto que queremos devolver en la respuesta, con sus datos y el ID que acabamos de asignarle.
             );
         }
 
