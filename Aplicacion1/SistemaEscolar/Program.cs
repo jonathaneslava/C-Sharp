@@ -8,8 +8,8 @@ var builder = WebApplication.CreateBuilder(args); //Preparar mi aplicacion y ser
 //builder.Services: es el contenedor donde registramos los servicios que la aplicación puede utilizar.
 //AddSingleton: indica que se utilizará una misma instancia del servicio durante la vida de la aplicación
 //<AlumnoService>: especifica qué clase queremos registrar.
-//AddSingleton le indica a ASP.NET Core que utilice una misma instancia del servicio durante la vida de la aplicación.
-builder.Services.AddSingleton<AlumnoService>();
+//Una instancia por solicitud HTTP, lo que encaja con el uso habitual de DbContext.
+builder.Services.AddScoped<AlumnoService>();
 
 //Registra nuestro contexto en el sistema de inyección de dependencias.
 builder.Services.AddDbContext<SistemaEscolarContext>(options =>

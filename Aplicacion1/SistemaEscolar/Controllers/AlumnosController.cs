@@ -17,7 +17,7 @@ namespace SistemaEscolar.Controllers
     {
         private readonly AlumnoService _alumnoService;
         //Es el constructor de la clase. Se ejecuta cuando se crea una instancia de AlumnosController
-        //Obtiene la instancia registrada anteriormente mediante AddSingleton.
+        //Obtiene la instancia registrada anteriormente mediante AddScoped.
         public AlumnosController(AlumnoService alumnoService)
         {
             //Guardamos esa instancia en el campo _alumnoService para poder utilizarla desde los métodos del Controller.

@@ -14,31 +14,14 @@ namespace SistemaEscolar.Services
         {
             _context = context;
         }
-        //Por ahora utilizamos la misma lista temporal de alumnos.
-        private readonly List<Alumnos> alumnos = new List<Alumnos>
-        {
-            new Alumnos
-            {
-                Id = 1,
-                Nombre = "Carlos",
-                Edad = 20,
-                Carrera = "Administración"
-            },
-            new Alumnos
-            {
-                Id = 2,
-                Nombre = "Pedro",
-                Edad = 25,
-                Carrera = "Medicina"
-            }
-        };
 
         // Busca un alumno utilizando su identificador.
         public Alumnos? ObtenerAlumnoPorId(int id)
         {
-            //Find recorre la lista hasta encontrar un alumno cuyo Id coincida con el valor recibido.
-            Alumnos? alumno = alumnos.Find(a => a.Id == id);
-            //Devuelve el objeto encontrado o null.
+            // Buscamos al alumno en SQL Server por su Id.
+            Alumnos? alumno = _context.Alumnos.Find(id);
+
+            // Si no existe, devolvemos null.
             return alumno;
         }
 
@@ -48,49 +31,57 @@ namespace SistemaEscolar.Services
             return _context.Alumnos.ToList();
         }
 
-        private int siguienteId = 3;
-
         public Alumnos RegistrarAlumno(Alumnos nuevoAlumno)
         {
-            //Asignamos un Id único al nuevo alumno.
-            //Usando siguienteId++ nos permite incrementar de forma ordenada los ID aunque se eliminen alumnos de la lista.
-            nuevoAlumno.Id = siguienteId++;
-            //Agrega el objeto a nuestra lista.
-            alumnos.Add(nuevoAlumno);
-            //Devuelve al alumno registrado
+            // Agrega el alumno al contexto de EF Core.
+            _context.Alumnos.Add(nuevoAlumno);
+
+            // Guarda los cambios en SQL Server.
+            _context.SaveChanges();
+
+            // Devuelve el alumno registrado, incluyendo su Id generado.
             return nuevoAlumno;
         }
 
         public Alumnos? ActualizarAlumno(int id, Alumnos alumnoActualizado)
         {
-            //Busca en la lista al alumno cuyo Id coincida con el que recibimos.
-            Alumnos? alumno = alumnos.Find(a => a.Id == id);
+            // Buscamos al alumno en la base de datos.
+            Alumnos? alumno = _context.Alumnos.Find(id);
 
-            //Si no encuentra al alumno devuelve null
+            // Si no existe, devolvemos null.
             if (alumno == null)
             {
-                return null; //Devuelve null si no existe
+                return null;
             }
-            //Asignacion de propiedades, copia los nuevos valores al alumno
+
+            // Actualizamos sus propiedades.
             alumno.Nombre = alumnoActualizado.Nombre;
             alumno.Edad = alumnoActualizado.Edad;
             alumno.Carrera = alumnoActualizado.Carrera;
-            //Devuelve el alumno actualizado.
+
+            // Guardamos los cambios en SQL Server.
+            _context.SaveChanges();
+
             return alumno;
         }
 
         public bool EliminarAlumno(int id)
         {
-            //Busca en la lista al alumno cuyo Id coincida con el que recibimos.
-            Alumnos? alumno = alumnos.Find(a => a.Id == id);
-            //Si no encuentra al alumno, devuelve false
+            // Buscamos al alumno en la base de datos.
+            Alumnos? alumno = _context.Alumnos.Find(id);
+
+            // Si no existe, indicamos que no se pudo eliminar.
             if (alumno == null)
             {
                 return false;
             }
-            //Si el alumno existe, lo elimina de la lista.
-            alumnos.Remove(alumno);
-            //Si lo eimino correctamente devuelve true.
+
+            // Marcamos al alumno para eliminarlo.
+            _context.Alumnos.Remove(alumno);
+
+            // Guardamos la eliminación en SQL Server.
+            _context.SaveChanges();
+
             return true;
         }
 
