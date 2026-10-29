@@ -25,5 +25,13 @@ namespace SistemaEscolar.Models
         [StringLength(100, MinimumLength = 2,
             ErrorMessage = "La carrera debe tener entre 2 y 100 caracteres.")]
         public string Carrera { get; set; } = string.Empty;
+
+        // Correo electrónico obligatorio del alumno.
+        //Exige que se proporcione un valor. En combinación con la validación de ASP.NET Core, una cadena vacía no será aceptada.
+        [Required(ErrorMessage = "El correo electrónico es obligatorio.")]
+        //Comprueba que el valor tenga un formato de correo electrónico válido.
+        [EmailAddress(ErrorMessage = "Ingresa un correo electrónico válido.")]
+        public string Correo { get; set; } = string.Empty;
+
     }
 }

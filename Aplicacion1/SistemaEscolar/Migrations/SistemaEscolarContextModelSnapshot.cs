@@ -34,6 +34,10 @@ namespace SistemaEscolar.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("Correo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Edad")
                         .HasColumnType("int");
 

@@ -58,6 +58,7 @@ namespace SistemaEscolar.Services
             alumno.Nombre = alumnoActualizado.Nombre;
             alumno.Edad = alumnoActualizado.Edad;
             alumno.Carrera = alumnoActualizado.Carrera;
+            alumno.Correo = alumnoActualizado.Correo;
 
             // Guardamos los cambios en SQL Server.
             _context.SaveChanges();
