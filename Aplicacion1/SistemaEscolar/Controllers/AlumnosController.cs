@@ -26,6 +26,7 @@ namespace SistemaEscolar.Controllers
 
         // Indica que este método responderá a una petición HTTP GET (se utiliza normalmente para CONSULTAR información).
         // GET: api/Alumnos
+        [ProducesResponseType(typeof(List<Alumnos>), StatusCodes.Status200OK)]
         [HttpGet]
         public ActionResult<List<Alumnos>> ObtenerAlumnos()
         {
