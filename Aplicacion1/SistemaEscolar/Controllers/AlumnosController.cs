@@ -63,6 +63,8 @@ namespace SistemaEscolar.Controllers
             );
         }
 
+        [ProducesResponseType(typeof(Alumnos), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         //Indica que este método recibe peticiones GET con un valor al final de la URL
         [HttpGet("{id}")]
         public ActionResult<Alumnos> ObtenerAlumnoPorId(int id)
